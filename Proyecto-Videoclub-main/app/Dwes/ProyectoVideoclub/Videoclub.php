@@ -37,7 +37,8 @@ class Videoclub{
         $this->socios = [];
         $this->numSocios = 0;
     }
-
+    
+    //Getters y Setters
     public function getNumProductosAlquilados(): int {
         return $this->numProductosAlquilados;
     }
@@ -45,6 +46,7 @@ class Videoclub{
     public function getNumTotalAlquileres(): int {
         return $this->numTotalAlquileres;
     }
+    //Esta función añade un producto al array de productos, además de contarlo para saber cuantos productos hay.
     private function incluirProducto($productoN)
     {
         $this->productos[$this->numProductos] = $productoN;
@@ -52,24 +54,28 @@ class Videoclub{
         $this->numProductos++;
     }
 
+    //Incluye una cinta de video al videoclub, con todos sus datos.
     public function incluirCintaVideo(string $titulo, float $precio, float $duracion)
     {
         $cintaVideoNueva = new CintaVideo($titulo, $this->numProductos, $precio, $duracion);
         $this->incluirProducto($cintaVideoNueva);
     }
 
+    //Incluye un DVD al videoclub, con todos sus datos.
     public function incluirDvd(string $titulo, float $precio, string $idioma, string $pantalla)
     {
         $dvdNueva = new Dvd($titulo, $this->numProductos, $precio, $idioma, $pantalla);
         $this->incluirProducto($dvdNueva);
     }
 
+    //Incluye un juego al videoclub, con todos sus datos.
     public function incluirJuego($titulo, $precio, $consola, $minJ, $maxJ)
     {
         $juegoNuevo = new Juego($titulo, $this->numProductos, $precio, $consola, $minJ, $maxJ);
         $this->incluirProducto($juegoNuevo);
     }
 
+    //Incluye un socio al videoclub, con todos sus datos, y lo suma al número de socios que hay.
     public function incluirSocio($nombre, $maxAlquilerConcurrentes = 3)
     {
         $socioNuevo = new Cliente($nombre, $this->numSocios, $maxAlquilerConcurrentes);
@@ -78,6 +84,7 @@ class Videoclub{
         $this->numSocios++;
     }
 
+    //Muestra todos los productos del videoclub, con sus respectivos datos.
     function listarProductos()
     {
         for ($i = 0; $i < $this->numProductos; $i++) {
@@ -85,6 +92,7 @@ class Videoclub{
         }
     }
 
+    //Muestra los socios que hay en el videoclub, con sus datos.
     function listarSocios()
     {
         for ($i = 0; $i < $this->numSocios; $i++) {
@@ -92,6 +100,7 @@ class Videoclub{
         }
     }
 
+    //Esta función es para que un socio alquile cierto producto, siempre que haya productos disponibles.
     public function alquilarSocioProductos(int $numSocio, array $numerosProductos): self {
         try {
             if (isset($this->socios[$numSocio])) {
@@ -114,21 +123,8 @@ class Videoclub{
             return $this;
         }
     }
-    public function devolverSocioProducto(int $numSocio, int $numeroProducto): self {
-        try {
-            if (isset($this->socios[$numSocio]) && isset($this->productos[$numeroProducto])) {
-                $this->socios[$numSocio]->devolver($numeroProducto);
-                $this->productos[$numeroProducto]->alquilado = false;
-            } else {
-                throw new ClienteNoEncontradoException("El socio o el producto no existe");
-            }
-            return $this;
-        } catch (VideoclubException $e) {
-            echo "Error: " . $e->getMessage();
-            return $this;
-        }
-    }
 
+    //Funcion para que un socio devuelva un producto, comprobando que ambos existan.
     public function devolverSocioProductos(int $numSocio, array $numerosProductos): self {
         try {
             if (isset($this->socios[$numSocio])) {
