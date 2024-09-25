@@ -1,0 +1,7 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Dwes\\ProyectoVideoclub\\": "app/Dwes/ProyectoVideoclub/"
+        }
+    }
+}
